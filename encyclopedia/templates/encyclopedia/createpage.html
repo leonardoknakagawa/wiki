@@ -1,0 +1,43 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia - {%  if edit_mode %} Edit Page: {{ edit_page_title }} {% else %} Create a New Page {% endif %}
+{% endblock %}
+
+{% block body %}
+    <h1>{% if edit_mode %} Edit Page: {{ edit_page_title }} {% else %} Create a New Page {% endif %}</h1>
+    <form class="container" action={% if edit_mode %} "{% url 'save edited page' edit_page_title %}" {% else %} "
+        {% url 'save page' %}" {% endif %} method="post">
+        {% csrf_token %}
+        <div id="entry-title-section" class="row">
+            <div class="container">
+                <div class="row">
+                    <label for="title">Title:</label>
+                </div>
+
+                <div class="row">
+                    <input name="title" placeholder="Enter your title " id="title"
+                           value="{{ edit_page_title }}" {% if edit_mode %} disabled {% endif %} >
+                </div>
+            </div>
+        </div>
+        <div id="entry-body-section" class="row">
+            <div class="container">
+                <div class="row">
+                    <label for="entry-content"> Content:</label>
+                </div>
+
+                <div class="row">
+                    <textarea placeholder="Enter contents in Markdown format here"
+                                           name="entry-content" id="entry-content">{{ edit_page_contents }}</textarea>
+                </div>
+            </div>
+        </div>
+        <div id="entry-submit-button-section" class="row">
+            <input type="submit" value="Save Page">
+        </div>
+
+
+
+    </form>
+{% endblock %}
